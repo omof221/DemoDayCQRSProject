@@ -1,9 +1,6 @@
-ChatGPT said:
-
-Süper 👌 GitHub paylaşımı yaparken sadece “teknolojiler” değil, aynı zamanda başka kullanıcıların projeyi çalıştırabilmesi için yapılması gereken ayarlar bilgisini de yazmak çok önemli. Senin Rent A Car projesi için hazır GitHub açıklaması aşağıda:
 
 🚗 Rent A Car Yönetim & Rezervasyon Sistemi
-📌 Açıklama
+
 
 Bu proje, Murat Yücedağ hocamızın rehberliğinde ve öncülüğünde ASP.NET Core, EF Core, CQRS ve API entegrasyonları kullanılarak geliştirilmiş modern bir araç kiralama ve rezervasyon sistemidir.
 
