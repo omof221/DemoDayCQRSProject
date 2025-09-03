@@ -1,0 +1,38 @@
+﻿@model DemoDayCQRSProject.CQRS.Commands.CarCommands.CreateCarCommands
+@{
+    ViewData["Title"] = "CreateCar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <br /><br />
+    <form method="post">
+        <label>Araç Markası</label>
+        <input type="text" asp-for="CarBrand" class="form-control" />
+        <br />
+         <label>Araç Modeli</label>
+        <input type="text" asp-for="CarModel" class="form-control" />
+        <br />
+        <label>Vites Türü</label>
+        <input type="text" asp-for="Gearbox" class="form-control" />
+        <br />
+        <label>Araç Kapı Sayısı</label>
+        <input type="text" asp-for="CarDoorCount" class="form-control" />
+        <br />
+        <label>Araç Fotoğraf Url</label>
+        <input type="text" asp-for="CarImmageUrl" class="form-control" />
+        <br />
+        <label>Araç Günlük Fiyat</label>
+        <input type="text" asp-for="CarPrice" class="form-control" />
+        <br />
+        <label>Araç Yakıt Tipi</label>
+        <input type="text" asp-for="FuelType" class="form-control" />
+        <br />
+       
+
+        <button class="btn btn-primary">Aracı Oluştur</button>
+    </form>
+</div>
+

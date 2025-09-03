@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div class="row">
+    <!-- Akaryakıt Kartı -->
+    <div class="col-lg-6 col-md-12 col-6 mb-4">
+        <div class="card shadow-lg border-0 rounded-3 animate__animated animate__fadeInUp">
+            <div class="card-body d-flex align-items-center">
+                <div class="avatar flex-shrink-0 me-3">
+                    <span class="avatar-initial rounded bg-info text-white p-3">
+                        <i class="bx bx-gas-pump fs-2"></i>
+                    </span>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1">Akaryakıt Fiyatları</h6>
+                    <h5>Benzin (95 Oktan): <strong>@ViewBag.Benzin TL</strong></h5>
+                    <h5>Motorin: <strong>@ViewBag.Motorin TL</strong></h5>
+                    <h5>Motorin (Excellium): <strong>@ViewBag.MotorinEx TL</strong></h5>
+                    <small class="text-success fw-semibold">
+                        <i class="bx bx-calendar"></i> Tarih: @ViewBag.Tarih
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toplam Araç -->
+    <div class="col-lg-6 col-md-12 col-6 mb-4">
+        <div class="card shadow-lg border-0 rounded-3 animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="card-body d-flex align-items-center">
+                <div class="avatar flex-shrink-0 me-3">
+                    <span class="avatar-initial rounded bg-primary text-white p-3">
+                        <i class="bx bx-car fs-2"></i>
+                    </span>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1">Toplam Araç Sayısı</h6>
+                    <h2 class="mb-0 fw-bold text-primary counter" data-target="@ViewBag.CarCount">0</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aylık Gelir -->
+    <div class="col-lg-6 col-md-12 col-6 mb-4">
+        <div class="card shadow-lg border-0 rounded-3 animate__animated animate__fadeInUp animate__delay-2s">
+            <div class="card-body d-flex align-items-center">
+                <div class="avatar flex-shrink-0 me-3">
+                    <span class="avatar-initial rounded bg-success text-white p-3">
+                        <i class="bx bx-money fs-2"></i>
+                    </span>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1">Aylık Toplam Gelir</h6>
+                    <h2 class="mb-0 fw-bold text-success counter" data-target="200000">0</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rezervasyonlar -->
+    <div class="col-lg-6 col-md-12 col-6 mb-4">
+        <div class="card shadow-lg border-0 rounded-3 animate__animated animate__fadeInUp animate__delay-3s">
+            <div class="card-body d-flex align-items-center">
+                <div class="avatar flex-shrink-0 me-3">
+                    <span class="avatar-initial rounded bg-warning text-white p-3">
+                        <i class="bx bx-calendar-event fs-2"></i>
+                    </span>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1">Bu Ayki Rezervasyonlar</h6>
+                    <h2 class="fw-bold text-warning counter" data-target="@ViewBag.ReservationCountThisMonth">0</h2>
+                    <small class="text-muted">(@DateTime.Now.ToString("MMMM yyyy"))</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Counter animasyonu
+    $(".counter").each(function () {
+        var $this = $(this),
+            target = +$this.attr("data-target"),
+            count = 0,
+            increment = Math.ceil(target / 100); // hız ayarı
+
+        function updateCounter() {
+            count += increment;
+            if (count > target) count = target;
+            $this.text(count.toLocaleString());
+            if (count < target) {
+                requestAnimationFrame(updateCounter);
+            }
+        }
+        updateCounter();
+    });
+</script>

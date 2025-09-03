@@ -1,0 +1,150 @@
+﻿<div class="container-fluid contact py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 text-capitalize text-primary mb-3">İletişim</h1>
+            <p class="mb-0">
+          
+            </p>
+        </div>
+        <div class="row g-5">
+
+            <!-- Form -->
+            <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="bg-secondary p-5 rounded">
+                    <h4 class="text-primary mb-4">Mesaj Gönder</h4>
+
+                    <form id="contactForm" asp-controller="Contact" asp-action="SendAjax" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row g-4">
+                            <div class="col-lg-12 col-xl-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Name" name="Name" placeholder="İsminiz" required />
+                                    <label for="Name">İsminiz</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-xl-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="Email" name="Email" placeholder="Mailiniz" required />
+                                    <label for="Email">Mailiniz</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-xl-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Phone" name="Phone" placeholder="Phone" />
+                                    <label for="Phone">Telefon</label>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-xl-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Project" name="Project" placeholder="Project" />
+                                    <label for="Project">Projeniz</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="Subject" name="Subject" placeholder="Subject" required />
+                                    <label for="Subject">Konu</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="Body" name="Body" placeholder="Leave a message here" style="height:160px" required></textarea>
+                                    <label for="Body">Mesaj</label>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button class="btn btn-light w-100 py-3" type="submit">Mesajı Gönder</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Ajax sonucunun görüneceği yer -->
+                    <div id="contactAlert" class="mt-3"></div>
+                </div>
+            </div>
+            <!-- SAĞ SÜTUN: Telefon • E-posta • Adres • Harita -->
+            <div class="col-xl-6 wow fadeInUp" data-wow-delay="0.15s">
+                <div class="bg-secondary p-5 rounded h-100 d-flex flex-column">
+                    <h4 class="text-primary mb-4">İletişim Bilgileri</h4>
+
+                    <ul class="list-unstyled mb-4">
+                        <li class="d-flex align-items-start mb-3">
+                            <i class="bx bx-phone fs-3 text-primary me-3"></i>
+                            <div>
+                                <div class="fw-semibold">Telefon</div>
+                                <a href="tel:+905555555555" class="link-light text-decoration-none">+90 (555) 555 55 55</a>
+                            </div>
+                        </li>
+
+                        <li class="d-flex align-items-start mb-3">
+                            <i class="bx bx-envelope fs-3 text-primary me-3"></i>
+                            <div>
+                                <div class="fw-semibold">E-posta</div>
+                                <a href="mailto:info@seninsiten.com" class="link-light text-decoration-none">info@seninsiten.com</a>
+                            </div>
+                        </li>
+
+                        <li class="d-flex align-items-start">
+                            <i class="bx bx-map fs-3 text-primary me-3"></i>
+                            <div>
+                                <div class="fw-semibold">Adres</div>
+                                <div class="text-light">Dalaman Havalimanı, Muğla</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- Google Haritalar -->
+                    <div class="ratio ratio-16x9 mt-auto">
+                        <!-- Konumu özelleştir: q= parametresini şirket adı/adres veya enlem-boylam ile değiştir -->
+                        <iframe src="https://www.google.com/maps?q=Dalaman%20Havaliman%C4%B1&output=embed"
+                                style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            const alertBox = document.getElementById("contactAlert");
+
+            if (result.success) {
+                alertBox.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${result.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>`;
+                form.reset();
+            } else {
+                alertBox.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${result.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>`;
+            }
+        });
+    </script>
+}

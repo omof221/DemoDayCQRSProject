@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Araç Öneri Asistanı";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <h3>Araç Öneri Asistanı</h3>
+    <p>İhtiyacınızı yazın, yapay zekâ size uygun araç önerisinde bulunsun.</p>
+
+    <textarea id="userInput" class="form-control" rows="4" placeholder="Örn: Aile için uzun yol, düşük yakıt tüketimi..."></textarea>
+    <br />
+    <button id="askBtn" class="btn btn-primary">Öneri Al</button>
+    <br /><br />
+    <div id="resultBox" class="alert alert-info" style="display:none"></div>
+</div>
+
+<script>
+    document.getElementById("askBtn").addEventListener("click", async () => {
+        let userInput = document.getElementById("userInput").value;
+
+        let response = await fetch("/AIAsistantCar/GetCarSuggestion", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: "userInput=" + encodeURIComponent(userInput)
+        });
+
+        let data = await response.json();
+
+        let resultBox = document.getElementById("resultBox");
+        resultBox.style.display = "block";
+        resultBox.innerText = data.suggestion;
+    });
+</script>

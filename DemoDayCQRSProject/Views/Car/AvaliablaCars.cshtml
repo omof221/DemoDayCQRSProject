@@ -1,0 +1,76 @@
+﻿@model List<DemoDayCQRSProject.CQRS.Results.CarResult.GetCarQueryResult>
+@{
+    Layout = null;
+}
+
+
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .car-card-img {
+        height: 220px; /* büyük görsel */
+        object-fit: cover;
+        border-top-left-radius: .75rem;
+        border-top-right-radius: .75rem;
+    }
+
+    .car-card .price {
+        font-weight: 700;
+        font-size: 1.05rem;
+    }
+
+    .reserve-btn {
+        background: #e50019; /* kırmızı */
+        border: none;
+    }
+
+        .reserve-btn:hover {
+            filter: brightness(.95);
+        }
+</style>
+
+<div class="container py-4">
+    <h2 class="text-center mb-4">Size Uygun Araçlar</h2>
+
+    <!-- Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+        @foreach (var item in Model /* burada gerekirse IsAvailable filtreleyebilirsin */)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm car-card rounded-3">
+                    <img src="@item.CarImmageUrl"
+                         alt="@($"{item.CarBrand} {item.CarModel}")"
+                         class="card-img-top car-card-img" />
+
+                    <div class="card-body">
+                        <h5 class="card-title mb-1">@item.CarBrand @item.CarModel</h5>
+                        <div class="text-muted small mb-2">
+                            <!-- Varsa yıl bilgisini modele ekleyince buraya koyabilirsin -->
+                        </div>
+
+                        <div class="price text-danger mb-2">
+                            Fiyat: @string.Format("{0:N0}", item.CarPrice) ₺
+                        </div>
+
+                        <div class="small text-secondary">
+                            <!-- Elindeki alanlara göre bilgi satırları -->
+                            <div class="mb-1">Yakıt: <strong>@item.FuelType</strong></div>
+                            <div class="mb-1">Vites: <strong>@item.Gearbox</strong></div>
+                            <div class="mb-1">Kapı: <strong>@item.CarDoorCount</strong></div>
+                            @* KM alanın yoksa bu satırı ekleme; modele eklersen aç:
+                               <div class="mb-1">KM: <strong>@item.Kilometer</strong></div> *@
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 pt-0 pb-3 px-3">
+                        <a href="/Reservation/Create/@item.CarId"
+                           class="btn w-100 reserve-btn text-white py-2 rounded-3">
+                            Rezervasyon Yap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

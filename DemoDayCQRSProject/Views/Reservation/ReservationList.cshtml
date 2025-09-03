@@ -1,0 +1,44 @@
+﻿@model List<DemoDayCQRSProject.CQRS.Results.ReservationResult.GetReservationQueryResult>
+@{
+    ViewData["Title"] = "ReservationList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <br />
+    <br />
+    <table class="table table-hover">
+        <tr>
+            <th>#</th>
+            <th>Teslim Alma Tarihi</th>
+            <th>Teslim Etme Tarihi</th>
+            <th>Teslim Alma Konumu</th>
+            <th>Teslim Etme Konumu</th>
+
+            <th>Araç Tipi</th>
+           
+            <th>Sil</th>
+            <th>Güncelle</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ReservationId</td>
+                <td>@item.PickUpDate</td>
+                <td>@item.DropOffDate</td>
+                <td>@item.PickUpLocation</td>
+                <td>@item.DropOffLocation</td>
+
+                <td>@item.CarType.CarBrand @item.CarType.CarModel</td>
+ 
+                <td><a href="/Reservation/DeleteReservation/@item.ReservationId" class="btn btn-danger">Sil</a></td>
+                <td><a href="/Reservation/UpdateReservation/@item.ReservationId" class="btn btn-success">Güncelle</a></td>
+            </tr>
+        }
+    </table>
+    <a href="/Reservation/CreateReservation/" class="btn btn-info">Yeni Rezervasyon Girişi</a>
+</div>
+
+
+

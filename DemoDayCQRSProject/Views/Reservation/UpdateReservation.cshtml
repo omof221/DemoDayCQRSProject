@@ -1,0 +1,75 @@
+﻿@model DemoDayCQRSProject.CQRS.Commands.ReservationCommands.UpdateReservationCommands
+@{
+    ViewData["Title"] = "UpdateReservation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <br />
+    <h3>Rezervasyon Güncelle</h3>
+    <form method="post">
+
+        <input type="hidden" asp-for="ReservationId" />
+
+        <label>Teslim Alma Tarihi</label>
+        <input type="date" asp-for="PickUpDate" class="form-control" />
+        <br />
+
+        <label>Teslim Etme Tarihi</label>
+        <input type="date" asp-for="DropOffDate" class="form-control" />
+        <br />
+
+        <label>Teslim Alma Konumu</label>
+        <input type="text" id="pickup" asp-for="PickUpLocation" class="form-control" />
+        <ul id="pickup-results" class="list-group"></ul>
+        <br />
+
+        <label>Teslim Etme Konumu</label>
+        <input type="text" id="dropoff" asp-for="DropOffLocation" class="form-control" />
+        <ul id="dropoff-results" class="list-group"></ul>
+        <br />
+
+        <label>Araç Seç</label>
+        <select asp-for="CarId" class="form-control" asp-items="ViewBag.Cars"></select>
+        <br />
+
+        <button class="btn btn-success">Rezervasyonu Güncelle</button>
+    </form>
+</div>
+
+<script>
+    async function setupAutocomplete(inputId, resultsId) {
+        const input = document.getElementById(inputId);
+        const results = document.getElementById(resultsId);
+
+        input.addEventListener("input", async function () {
+            let query = this.value;
+            if (query.length < 3) return;
+
+            let response = await fetch(`/Reservation/SearchLocation?query=${query}`);
+            let data = await response.json();
+
+            results.innerHTML = "";
+
+            if (data.candidates) {
+                data.candidates.forEach(c => {
+                    let li = document.createElement("li");
+                    li.classList.add("list-group-item");
+                    li.textContent = c.formatted_address;
+                    li.onclick = () => {
+                        input.value = c.formatted_address;
+                        results.innerHTML = "";
+                    };
+                    results.appendChild(li);
+                });
+            }
+        });
+    }
+
+    setupAutocomplete("pickup", "pickup-results");
+    setupAutocomplete("dropoff", "dropoff-results");
+</script>

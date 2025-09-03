@@ -1,0 +1,29 @@
+﻿
+@{
+    Layout = null;
+}
+
+@model DemoDayCQRSProject.CQRS.Commands.ReservationCommands.ReservationSearchCommand
+
+<div class="container my-5">
+    <h2>Search Cars</h2>
+    <form method="post" asp-action="SearchAvailableCars" asp-controller="Reservation">
+        <div class="mb-3">
+            <label>Pick Up Location</label>
+            <input type="text" asp-for="PickUpLocation" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Drop Off Location</label>
+            <input type="text" asp-for="DropOffLocation" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Pick Up Date</label>
+            <input type="date" asp-for="PickUpDate" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Drop Off Date</label>
+            <input type="date" asp-for="DropOffDate" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search Available Cars</button>
+    </form>
+</div>

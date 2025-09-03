@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Araç Öneri Asistanı";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container mt-4">
+    <h3 class="mb-3">🚗 Araç Öneri Asistanı</h3>
+    <p>İhtiyacınızı yazın, yapay zekâ size uygun araç önerisinde bulunsun.</p>
+
+    <div class="mb-3">
+        <textarea id="userInput" class="form-control" rows="4" placeholder="Örn: Aile için uzun yol, düşük yakıt tüketimi..."></textarea>
+    </div>
+
+    <button id="askBtn" type="button" class="btn btn-primary">Öneri Al</button>
+
+    <!-- Yükleniyor animasyonu -->
+    <div id="loading" class="mt-3" style="display:none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Yükleniyor...</span>
+        </div>
+        <span class="ms-2">Öneri getiriliyor, lütfen bekleyin...</span>
+    </div>
+
+    <!-- Sonuç kutusu -->
+    <div id="resultBox" class="card mt-4" style="display:none;">
+        <div class="card-body">
+            <p id="resultText" style="font-size:18px; color:black; font-weight:500; white-space:pre-line;"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("askBtn").addEventListener("click", async () => {
+        let userInput = document.getElementById("userInput").value;
+
+        if (!userInput.trim()) {
+            alert("Lütfen bir ihtiyaç yazınız.");
+            return;
+        }
+
+        let loading = document.getElementById("loading");
+        let resultBox = document.getElementById("resultBox");
+        let resultText = document.getElementById("resultText");
+
+        // Önce sonucu temizle ve loading aç
+        resultBox.style.display = "none";
+        resultText.innerText = "";
+        loading.style.display = "block";
+
+        try {
+            let response = await fetch("/AıAsistantCar/GetCarSuggestion", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "userInput=" + encodeURIComponent(userInput)
+            });
+
+            let data = await response.json();
+
+            // Loading kapat, sonucu göster
+            loading.style.display = "none";
+            resultBox.style.display = "block";
+            resultText.innerText = data.suggestion;
+
+        } catch (err) {
+            loading.style.display = "none";
+            alert("Bir hata oluştu: " + err);
+        }
+    });
+</script>

@@ -1,0 +1,95 @@
+﻿@model DemoDayCQRSProject.CQRS.Commands.ReservationCommands.CreateResevationCommands
+@{
+    ViewData["Title"] = "CreateReservation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container">
+    <br /><br />
+    <form method="post">
+        <label>Teslim Alma Tarihi</label>
+        <input type="date" asp-for="PickUpDate" class="form-control" />
+        <br />
+        <label>Teslim Etme Tarihi</label>
+        <input type="date" asp-for="DropOffDate" class="form-control" />
+        <br />
+        <label>Teslim Alma Konumu</label>
+      @*   <input type="text" asp-for="PickUpLocation" class="form-control" /> *@
+        <input type="text" id="pickup" asp-for="PickUpLocation" class="form-control" />
+        <ul id="pickup-results" class="list-group"></ul>
+
+        <script>
+            document.getElementById("pickup").addEventListener("input", async function () {
+                let query = this.value;
+                if (query.length < 3) return;
+
+                let response = await fetch(`/Reservation/SearchLocation?query=${query}`);
+                let data = await response.json();
+
+                let results = document.getElementById("pickup-results");
+                results.innerHTML = "";
+
+                if (data.candidates) {
+                    data.candidates.forEach(c => {
+                        let li = document.createElement("li");
+                        li.classList.add("list-group-item");
+                        li.textContent = c.formatted_address;
+                        li.onclick = () => {
+                            document.getElementById("pickup").value = c.formatted_address;
+                            results.innerHTML = "";
+                        };
+                        results.appendChild(li);
+                    });
+                }
+            });
+        </script>
+
+        <br />
+        <label>Teslim Etme Konumu</label>
+        @* <input type="text" asp-for="DropOffLocation" class="form-control" /> *@
+        <input type="text" id="dropoff" asp-for="DropOffLocation" class="form-control" />
+        <ul id="dropoff-results" class="list-group"></ul>
+
+        <script>
+            document.getElementById("dropoff").addEventListener("input", async function () {
+                let query = this.value;
+                if (query.length < 3) return;
+
+                let response = await fetch(`/Reservation/SearchLocation?query=${query}`);
+                let data = await response.json();
+
+                let results = document.getElementById("dropoff-results");
+                results.innerHTML = "";
+
+                if (data.candidates) {
+                    data.candidates.forEach(c => {
+                        let li = document.createElement("li");
+                        li.classList.add("list-group-item");
+                        li.textContent = c.formatted_address;
+                        li.onclick = () => {
+                            document.getElementById("dropoff").value = c.formatted_address;
+                            results.innerHTML = "";
+                        };
+                        results.appendChild(li);
+                    });
+                }
+            });
+        </script>
+
+        <br />
+    @*     <label>Araç Tipi</label>
+        <input type="text" asp-for="CarType.CarBrand" class="form-control" /> *@
+        <label>Araç Seç</label>
+        <select asp-for="CarId" class="form-control" asp-items="ViewBag.Cars"></select>
+        <br />
+
+        <br />
+     
+
+
+        <button class="btn btn-primary">Rezervasyonu  Oluştur</button>
+    </form>
+</div>
+

@@ -1,0 +1,120 @@
+﻿<div class="carousel-item active">
+    <img src="/Cental-1.0.0/img/carousel-2.jpg" class="img-fluid w-100" alt="First slide" />
+    <div class="carousel-caption d-flex justify-content-center align-items-center">
+        <div class="container py-4">
+            <div class="row g-5 justify-content-center">
+                <!-- Orta kısım form -->
+                <div class="col-lg-6 col-md-8 fadeInLeft animated" data-animation="fadeInLeft" data-delay="1s" style="animation-delay: 1s;">
+                    <div class="bg-secondary rounded p-5 shadow-lg">
+                        <h4 class="text-white mb-4 text-center">ARAÇ REZERVASYONU</h4>
+                        <form method="post" action="/Reservation/SearchAvailableCars">
+                            <div class="row g-3">
+
+                                <!-- Pick Up -->
+                                <div class="col-12 position-relative">
+                                    <div class="input-group">
+                                        <div class="d-flex align-items-center bg-light text-body rounded-start p-2">
+                                            <span class="fas fa-map-marker-alt"></span>
+                                            <span class="ms-1">Teslim Alma Noktası</span>
+                                        </div>
+                                        <input class="form-control" id="pickup" name="PickUpLocation" type="text"
+                                               placeholder="Şehir Veya Havalimanı Seçin" autocomplete="off" />
+                                    </div>
+                                    <ul id="pickup-results" class="list-group position-absolute w-100"
+                                        style="z-index:2000; max-height:200px; overflow-y:auto; background:#fff;"></ul>
+                                </div>
+
+                                <!-- Drop Off -->
+                                <div class="col-12 position-relative">
+                                    <a href="#" class="text-start text-white d-block mb-2">Başka Bir Noktada Mı Teslim Edeceksiniz</a>
+                                    <div class="input-group">
+                                        <div class="d-flex align-items-center bg-light text-body rounded-start p-2">
+                                            <span class="fas fa-map-marker-alt"></span>
+                                            <span class="ms-1">Teslim Etme Noktası</span>
+                                        </div>
+                                        <input class="form-control" id="dropoff" name="DropOffLocation" type="text"
+                                               placeholder="Şehir Veya Havalimanı Seçin" autocomplete="off" />
+                                    </div>
+                                    <ul id="dropoff-results" class="list-group position-absolute w-100"
+                                        style="z-index:2000; max-height:200px; overflow-y:auto; background:#fff;"></ul>
+                                </div>
+
+                                <!-- Pick Up Date -->
+                                <div class="col-12">
+                                    <div class="input-group">
+                                        <div class="d-flex align-items-center bg-light text-body rounded-start p-2">
+                                            <span class="fas fa-calendar-alt"></span>
+                                            <span class="ms-1">Teslim Alma Tarihi</span>
+                                        </div>
+                                        <input class="form-control" type="date" name="PickUpDate" required>
+                                    </div>
+                                </div>
+
+                                <!-- Drop Off Date -->
+                                <div class="col-12">
+                                    <div class="input-group">
+                                        <div class="d-flex align-items-center bg-light text-body rounded-start p-2">
+                                            <span class="fas fa-calendar-alt"></span>
+                                            <span class="ms-1">Teslim Etme Tarihi</span>
+                                        </div>
+                                        <input class="form-control" type="date" name="DropOffDate" required>
+                                    </div>
+                                </div>
+
+                                <!-- Submit -->
+                                <div class="col-12">
+                                    <button class="btn btn-light w-100 py-2">Uygun Araçları Görüntüle</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sağ taraf yazı -->
+                <div class="col-lg-5 d-none d-lg-flex fadeInRight animated align-items-center"
+                     data-animation="fadeInRight" data-delay="1s" style="animation-delay: 1s;">
+                    <div class="text-start">
+                        <h1 class="display-5 text-white">Seyhatini Şimdi Planla %15 indirimi Yakala</h1>
+                        <p class="text-white">Yelken Rent a Car</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script -->
+<script>
+    async function setupAutocomplete(inputId, resultsId) {
+        const input = document.getElementById(inputId);
+        const results = document.getElementById(resultsId);
+
+        input.addEventListener("input", async function () {
+            let query = this.value;
+            if (query.length < 3) {
+                results.innerHTML = "";
+                return;
+            }
+
+            let response = await fetch(`/Location/Search?query=${query}`);
+            let data = await response.json();
+
+            results.innerHTML = "";
+            if (data.candidates) {
+                data.candidates.forEach(c => {
+                    let li = document.createElement("li");
+                    li.classList.add("list-group-item");
+                    li.textContent = c.formatted_address || c.name;
+                    li.onclick = () => {
+                        input.value = li.textContent;
+                        results.innerHTML = "";
+                    };
+                    results.appendChild(li);
+                });
+            }
+        });
+    }
+
+    setupAutocomplete("pickup", "pickup-results");
+    setupAutocomplete("dropoff", "dropoff-results");
+</script>
