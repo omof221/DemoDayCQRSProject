@@ -2,7 +2,7 @@
 🚗 Rent A Car Yönetim & Rezervasyon Sistemi
 
 
-Bu proje, Murat Yücedağ hocamızın rehberliğinde ve öncülüğünde ASP.NET Core, EF Core, CQRS ve API entegrasyonları kullanılarak geliştirilmiş modern bir araç kiralama ve rezervasyon sistemidir.
+Bu proje, ASP.NET Core, EF Core, CQRS ve API entegrasyonları kullanılarak geliştirilmiş modern bir araç kiralama ve rezervasyon sistemidir.
 
 Kullanıcılar:
 
